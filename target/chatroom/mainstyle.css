@@ -1,0 +1,5 @@
+#chat {height:700px;width:600px; resize: none;overflow-x: hidden;overflow-y: visible;border: 1px solid black }
+#message {height:100px; width:400px;float: left;margin: 20px;resize: none;overflow-x: hidden;overflow-y: visible}
+#send {height: 40px; width: 100px;}
+#exit {height: 40px; width: 100px;}
+

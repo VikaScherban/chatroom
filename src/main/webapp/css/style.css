@@ -1,0 +1,291 @@
+.init {
+	margin: 30px;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+}
+.main-wrapper{
+	background-image: url("../img/texture-color-splash.jpg");
+	max-width: 100%;
+	height: 100%;
+	text-align: center;
+}
+.logo {
+	padding: 30px;
+}
+.register{
+	height: 410px;
+	width: 450px;
+	margin: 0 auto;
+	margin-top: 15px;
+	margin-bottom: 52px;
+	padding: 0 50px 5px 50px;
+	box-sizing: border-box;
+	background-color: RGBA(0, 0, 0, 0.7);
+	border: 4px;
+	border-style: solid;
+	border-image: radial-gradient(rgba(76,44,56,0.5), rgba(255,206,255,0.5)) 40% repeat;
+}
+.register-lable {
+	padding-bottom: 6px;
+	font-size: 34px;
+	display: block;
+	text-align: left;
+	background: -webkit-linear-gradient(rgb(226,83,141),rgb(225,31,85));
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+.login-block {
+	text-align: left;
+	padding-top: 25px;
+}
+.text {
+	width: 335px;
+	background-color: #C0C0C0;
+	opacity: 0.4;
+	height: 50px;
+	font-size: 30px;
+	padding-left: 5px;
+}
+
+/*noinspection ALL*/
+.enter-button, .register-button {
+	width: 335px;
+	background-color: rgb(166,24,54);
+	border: none;
+	height: 40px;
+	cursor: pointer;
+	font-size: 22px;
+	margin-top: 25px;
+	font-family: "Minion Pro";
+}
+.register-button{
+	margin: 0;
+}
+.left-text, .right-text{
+	font-size: 14px;
+	background: -webkit-linear-gradient(rgb(226,83,141),rgb(225,31,85));
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	cursor: pointer;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.left-text {
+	float: left;
+}
+.right-text {
+	float: right;
+}
+
+
+
+/*Chat page*/
+.chat-wrapper {
+	width: 100%;
+	height: 100%;
+	background-color: gray;
+	text-align: center;
+}
+
+.chat-body {
+	width: 800px;
+	height: 100%;
+	margin: 0 auto;
+	position: relative;
+	background-image: none;
+	background-size: cover;
+}
+
+.user-inf {
+	display: inline-block;
+	padding: 10px;
+	vertical-align: top;
+}
+
+.user1, .user2 {
+	height: 170px;
+	width: 165px;
+	background-color: RGBA(175,161,162,0.6);
+}
+.user1 {
+	margin-left: 40px;
+	float: left;
+}
+.user2 {
+	margin-right: 40px;
+	float: right;
+}
+.leave-chat-button {
+	width: 217px;
+	height: 80px;
+	padding: 12px;
+	box-sizing: border-box;
+	background-color: RGBA(173,133,136, 0.6);
+	font-size: 25px;
+	text-transform: uppercase;
+	border: 2px solid black;
+	cursor: pointer;
+	margin-top: 50px;
+	position: absolute;
+	left: 286px;
+}
+.leave-chat-button:hover {
+	opacity: 0.7;
+}
+.user-img-joy {
+	height: 111%;
+	width: 60%;
+	background-image: url("../img/joyhappy.png");
+	background-size: cover;
+	position: relative;
+	left: 60px;
+	bottom: 12px;
+}
+.user-img-sad {
+	height: 100%;
+	width: 80%;
+	background-image: url("../img/sadness.png");
+	background-size: cover;
+	position: relative;
+	left: 57px;
+}
+.user-inf-text {
+	float: left;
+	text-transform: uppercase;
+	font-size: 20px;
+	color: black;
+}
+.replics {
+	padding: 10px;
+}
+.advice {
+	font-size: 14px;
+	width: 92px;
+	clear:left;
+	position: absolute;
+	top: 71px;
+	text-align: left;
+	margin-top: 21px;
+}
+
+.user-avatar{
+	height: 85px;
+	width: 60px;
+}
+.user2-avatar{
+	float: left;
+}
+.user1-avatar{
+	float: right;
+	margin-right: 10px;
+}
+.user-avatar-img {
+	width: 100%;
+	height: 100%;
+	background-size: cover;
+	background-position: center;
+}
+.user2-avatar-img{
+	background-image: url("../img/cat.jpg");
+}
+.user1-avatar-img{
+	background-image: url("../img/cat.jpg");
+}
+.user-message{
+	display: inline-block;
+	width: 350px;
+	min-height: 60px;
+	background-color: RGBA(212,213,214,0.6);
+	border-radius: 10px;
+	position: relative;
+	top: 23px;
+	text-align: left;
+	padding: 10px;
+	box-sizing: border-box;
+}
+
+.replic-user2 {
+	float: left;
+}
+
+.replic-user1 {
+	float: right;
+}
+.message-block {
+	text-align: left;
+	max-height: 232px;
+	overflow-y: scroll;
+	position: absolute;
+	bottom: 193px;
+	right: 10px;
+}
+.message-area {
+	width: 80%;
+	height: 100px;
+	background-color: RGBA(212,213,214,0.6);
+	border: none;
+	padding: 10px;
+	margin: 12px;
+	position: absolute;
+	bottom: 24px;
+	left: 6px;
+	resize: none;
+	overflow: auto;
+}
+.message-button {
+	position: absolute;
+	width: 64px;
+	height: 64px;
+	background-image: url("../img/message-button.jpg");
+	cursor: pointer;
+	font-size: 0;
+	bottom: 64px;
+	right: 36px;
+}
+.add{
+	text-align: right;
+	position: absolute;
+	bottom: 142px;
+	right: 137px;
+}
+.add-some {
+	display: inline-block;
+	cursor: pointer;
+	padding: 10px;
+}
+
+h2{
+	margin: 0;
+}
+ul,li {
+	margin:0;
+	padding:0;
+}
+li {
+	list-style: none;
+}
+.smile-list {
+	background-color: white;
+	position: absolute;
+	bottom: 41px;
+	width: 152px;
+	right: -32px;
+	text-align: left;
+}
+
+.smile-list li{
+	display: inline-block;
+}
+.display_none{
+	display: none;
+}
+.smile-btn{
+	cursor: pointer;
+}
+
+.loginning{
+	height: 10%;
+}

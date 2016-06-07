@@ -1,0 +1,10 @@
+chatroom\LoginServlet.class
+chatroom\LogoutServlet.class
+chatroom\Message.class
+chatroom\ServerAwareServlet.class
+chatroom\Server.class
+chatroom\MainServlet.class
+chatroom\InitListener.class
+chatroom\User.class
+chatroom\RegistrateServlet.class
+chatroom\StartServlet.class
