@@ -289,3 +289,12 @@ li {
 .loginning{
 	height: 10%;
 }
+
+.text-block{
+    width: 200px;
+    background-color: wheat;
+    height: auto;
+    position: absolute;
+    padding: 20px;
+    box-sizing: border-box;
+}

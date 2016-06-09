@@ -16,13 +16,9 @@ import java.io.IOException;
 public class InitListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        try {
-            Server server = new Server();
-            server.readFiles();
-            servletContextEvent.getServletContext().setAttribute("server",server);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        Server server = new Server();
+        server.readElement();
+        servletContextEvent.getServletContext().setAttribute("server",server);
     }
 
     @Override

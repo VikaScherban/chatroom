@@ -14,25 +14,26 @@
 </head>
 <body>
   <div class ="chat-wrapper">
-    <div class = "chat-body">
+      <div id="textpos" class="text-block">Позитивні слова</div>
+      <div class = "chat-body">
       <h2> <%=request.getSession().getAttribute("user").toString()%>, вітаємо в чаті!</h2>
       <div class = "top-chat">
         <div class="user-inf user1">
           <span class = "user-inf-text">Друг</span>
-          <div id="joy-text2" class="advice">Так тримати! Усмішка продовжує життя :)</div>
-          <div id="sad-text2" class="advice">Вам варто заспокоїтися. Послухайте приємну музику чи погладьте котика :)</div>
-          <div id="joy-image2" class="user-img-joy"></div>
-          <div id="sad-image2" class="user-img-sad"></div>
+          <div id="joy-text2" class="advice display_none">Так тримати! Усмішка продовжує життя :)</div>
+          <div id="sad-text2" class="advice display_none">Вам варто заспокоїтися. Послухайте приємну музику чи погладьте котика :)</div>
+          <div id="joy-image2" class="user-img-joy display_none"></div>
+          <div id="sad-image2" class="user-img-sad display_none"></div>
         </div>
         <form action="<%=request.getContextPath()%>/logout" method="post">
           <input class="user-inf leave-chat-button" type="submit" id="exit" value="Покинути чат">
         </form>
         <div class="user-inf user2">
           <span class="user-inf-text"><%=request.getSession().getAttribute("user").toString()%></span>
-          <div id="joy-text1" class="advice">Так тримати! Усмішка продовжує життя :)</div>
-          <div id="sad-text1" class="advice">Вам варто заспокоїтися. Послухайте приємну музику чи погладьте котика :)</div>
-          <div id="joy-image1" class="user-img-joy"></div>
-          <div id="sad-image1" class="user-img-sad"></div>
+          <div id="joy-text1" class="advice display_none">Так тримати! Усмішка продовжує життя :)</div>
+          <div id="sad-text1" class="advice display_none">Вам варто заспокоїтися. Послухайте приємну музику чи погладьте котика :)</div>
+          <div id="joy-image1" class="user-img-joy display_none"></div>
+          <div id="sad-image1" class="user-img-sad display_none"></div>
         </div>
       </div>
       <div class="replics" >
@@ -68,6 +69,7 @@
         </form>
       </div>
     </div>
+      <div class="text-block">Негативні слова</div>
   </div>
   <script type="text/javascript" src="<%=request.getContextPath()%>/jquery-2.1.3.js"></script>
   <script>
@@ -78,19 +80,22 @@
         elem.scrollTop = elem.scrollHeight;
       }, 500);
 
-      $('#joy-text1').addClass('display_none');
-      $('#sad-text1').addClass('display_none');
-      $('#joy-image1').addClass('display_none');
-      $('#sad-image1').addClass('display_none');
-
-      $('#joy-text2').addClass('display_none');
-      $('#sad-text2').addClass('display_none');
-      $('#joy-image2').addClass('display_none');
-      $('#sad-image2').addClass('display_none');
-
       setInterval(getMessages,500);
 
       function getMessages(){
+        $.ajax({
+          url: "<%=request.getContextPath()%>/main",
+          type: "GET",
+          data:"action=gettext"
+        }).done(function(responsetext){
+          var resulttext = responsetext;
+            if (resulttext!=null){
+                $("#textpos").append(resulttext);
+            }
+        }).fail(function(){
+            //alert("Сервер не доступний");
+        });
+
         $.ajax({
           url: "<%=request.getContextPath()%>/main",
           type: "GET",

@@ -12,6 +12,10 @@ public class Server {
     private ArrayList<Message> messages = new ArrayList<Message>();
     private ArrayList<String> phrasespos = new ArrayList<String>();
     private ArrayList<String> phrasesneg = new ArrayList<String>();
+    private ArrayList<String> texts = new ArrayList<String>();
+    private ArrayList<String> postext = new ArrayList<>();
+    private ArrayList<String> negtext = new ArrayList<>();
+
     private User echo = new User("echo", "", new Date());
 
     public HashMap<String, User> getAllUsers() {
@@ -47,12 +51,65 @@ public class Server {
         return words;
     }
 
+    public boolean isLetter(char ch){
+        if (ch != ' ' && ch != '.' && ch != ',' && ch != '?' && ch != '!' && ch != '(' &&
+                ch != ')' && ch != ';' && ch != '\t' && ch != '\n' && ch!='0' && ch!='1' &&
+                ch!='2' && ch!='3' && ch!='4' && ch!='5' && ch!='6' && ch!='7' && ch!='8' &&
+                ch!='9' && ch != '"') return true;
+        return false;
+    }
+
+    public ArrayList<String> getElem(String s){
+        ArrayList<String> elems = new ArrayList<>();
+        String word = "";
+        int i=0;
+
+        while(i < s.length()) {
+            char ch = s.charAt(i);
+            if (isLetter(ch)) word += s.charAt(i);
+            else if (word != "" && !elems.contains(word)) {elems.add(word); word = "";}
+           i++;
+        }
+        if (word != "") elems.add(word);
+
+        return elems;
+    }
+
+
+    public String[] getElemS (String s){
+
+        String[] elems = new String[100000];
+        String word = "";
+        int k = -1;
+        int i=0;
+        while(i < s.length()) {
+            char ch = s.charAt(i);
+            if (isLetter(ch)) word += s.charAt(i);
+            else if (word != "") {elems[++k] = word; word ="";}
+            i++;
+        }
+        if (word != "") elems[++k]= word;
+        return elems;
+    }
+
     public ArrayList<String>  getPosPhrases(){
         return phrasespos;
     }
 
     public ArrayList<String>  getNegPhrases(){
         return phrasesneg;
+    }
+
+    public ArrayList<String> getTexts(){
+        return texts;
+    }
+
+    public ArrayList<String> getPosText(){
+        return postext;
+    }
+
+    public ArrayList<String> getNegText(){
+        return negtext;
     }
 
     public void setMessages(ArrayList<Message> messages) {
@@ -67,29 +124,26 @@ public class Server {
         this.echo = echo;
     }
 
-    public void readFiles() throws FileNotFoundException{
-        String s1= "";
-        String s2= "";
-        try (FileInputStream inp1 = new FileInputStream("E:/positive.txt")) {
+    public String readFiles(String fileName){
+        String s = "";
+        try (FileInputStream inp1 = new FileInputStream(fileName)) {
             Scanner in1 = new Scanner(new InputStreamReader(inp1, "UTF-8")).useLocale(Locale.US);
-            while(in1.hasNext()){
-                s1 += in1.nextLine();
+            while (in1.hasNext()) {
+                s += in1.nextLine();
             }
             in1.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        try (FileInputStream inp2 = new FileInputStream("E:/negative.txt")) {
-            Scanner in2 = new Scanner(new InputStreamReader(inp2, "UTF-8")).useLocale(Locale.US);
-            while(in2.hasNext()){
-                s2 += in2.nextLine();
-            }
-            in2.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        phrasespos = getPhrases(s1);
-        phrasesneg = getPhrases(s2);
+        return s.toLowerCase();
     }
+
+    public void readElement(){
+        phrasespos = getPhrases(readFiles("C:\\Users\\Vika\\Desktop\\chatroom\\src\\main\\resources\\positive.txt"));
+        phrasesneg = getPhrases(readFiles("C:\\Users\\Vika\\Desktop\\chatroom\\src\\main\\resources\\negative.txt"));
+        postext = getPhrases(readFiles("C:\\Users\\Vika\\Desktop\\chatroom\\src\\main\\resources\\positive2.txt"));
+        negtext = getPhrases(readFiles("C:\\Users\\Vika\\Desktop\\chatroom\\src\\main\\resources\\negative2.txt"));
+        texts = getElem(readFiles("C:\\Users\\Vika\\Desktop\\chatroom\\src\\main\\resources\\texts.txt"));
+    }
+
 }
