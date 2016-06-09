@@ -67,14 +67,13 @@ public class Server {
         while(i < s.length()) {
             char ch = s.charAt(i);
             if (isLetter(ch)) word += s.charAt(i);
-            else if (word != "" && !elems.contains(word)) {elems.add(word); word = "";}
+            else if (word!= "\uFEFF" && word != "" && !elems.contains(word)) {elems.add(word); word = "";}
            i++;
         }
-        if (word != "") elems.add(word);
-
+        if (word!= "\uFEFF" && word != "") elems.add(word);
+        elems.remove(0);
         return elems;
     }
-
 
     public String[] getElemS (String s){
 

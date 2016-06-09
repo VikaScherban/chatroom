@@ -53,7 +53,6 @@ public class MainServlet extends ServerAwareServlet {
                 String word2;
                 String word3;
 
-
                 if (words.length == 1) {
                     if (posWords.contains(words[0])) numbOfPos++;
                     else if (negWords.contains(words[0])) numbOfNeg++;
@@ -111,9 +110,11 @@ public class MainServlet extends ServerAwareServlet {
             for (Message message : messages) {
                 String lowmes = message.getMes();
                 String[] words = server.getElemS(lowmes);
-                for (int i=0; i<words.length; i++) {
+                int i=0;
+                while (words[i]!=null) {
                     if (pos.contains(words[i])) posList.add(words[i]);
                     if (neg.contains(words[i])) negList.add(words[i]);
+                    i++;
                 }
             }
         }
@@ -164,23 +165,25 @@ public class MainServlet extends ServerAwareServlet {
             }
             combinText.add(texts.get(size - 2) + " " + texts.get(size - 1));
         }
-        //пошук позитивних слів та відповідний список словосполучень з ним в тексті
 
+        //пошук позитивних слів та відповідний список словосполучень з ним в тексті
+        ArrayList<String> findother = new ArrayList<>();
         for (int i = 0; i < texts.size(); i++) {
             if (pos.contains(texts.get(i))) {
                 posWords.add(texts.get(i));
-                if (i != 0 && texts.size() > i)
+                if (i != 0 && texts.size() > i) {
                     phrase1 = texts.get(i - 1) + " " + texts.get(i) + " " + texts.get(i + 1);
-                if (i == 0 && texts.size() >= i) phrase2 = texts.get(i) + " " + texts.get(i + 1);
-                if (i != 0 && texts.size() == i - 1) phrase3 = texts.get(i - 1) + " " + texts.get(i);
+                    phrase2 = texts.get(i) + " " + texts.get(i + 1);
+                    phrase3 = texts.get(i - 1) + " " + texts.get(i);
+                }
+                //шукаємо в тексті позтивне слово, яке вже виявили(шукаємо чи воно є іще)
+                findother = findWordNext(i + 1, texts, texts.get(i));
+                posPhraseList.get(posWords.size() - 1).addAll(findother);
             }
-            if (phrase1 != "") posPhraseList.get(posWords.size() - 1).add(phrase1);
-            if (phrase2 != "") posPhraseList.get(posWords.size() - 1).add(phrase2);
-            if (phrase3 != "") posPhraseList.get(posWords.size() - 1).add(phrase3);
+            if (phrase1 != "" && !findother.contains(phrase1)) posPhraseList.get(posWords.size() - 1).add(phrase1);
+            if (phrase2 != "" && !findother.contains(phrase2)) posPhraseList.get(posWords.size() - 1).add(phrase2);
+            if (phrase3 != "" && !findother.contains(phrase3)) posPhraseList.get(posWords.size() - 1).add(phrase3);
 
-            //шукаємо в тексті позтивне слово, яке вже виявили(шукаємо чи воно є іще)
-            ArrayList<String> findother = findWordNext(i + 1, texts, texts.get(i));
-            posPhraseList.get(posWords.size() - 1).addAll(findother);
 
             /*if (neg.contains(texts.get(i))) {
                 if (i != 0 && texts.size() > i) phrase1 = texts.get(i - 1) + " " + texts.get(i) + " " + texts.get(i + 1);
