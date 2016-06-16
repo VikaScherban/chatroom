@@ -55,7 +55,8 @@ public class Server {
         if (ch != ' ' && ch != '.' && ch != ',' && ch != '?' && ch != '!' && ch != '(' &&
                 ch != ')' && ch != ';' && ch != '\t' && ch != '\n' && ch!='0' && ch!='1' &&
                 ch!='2' && ch!='3' && ch!='4' && ch!='5' && ch!='6' && ch!='7' && ch!='8' &&
-                ch!='9' && ch != '"') return true;
+                ch!='9' && ch != '"' && ch != '%' && ch!=171 && ch!=187 && ch!='[' && ch!=']' &&
+                ch!=':') return true;
         return false;
     }
 
@@ -67,7 +68,7 @@ public class Server {
         while(i < s.length()) {
             char ch = s.charAt(i);
             if (isLetter(ch)) word += s.charAt(i);
-            else if (word!= "\uFEFF" && word != "" && !elems.contains(word)) {elems.add(word); word = "";}
+            else if (word!= "\uFEFF" && word != "") { elems.add(word); word = "";}
            i++;
         }
         if (word!= "\uFEFF" && word != "") elems.add(word);
@@ -137,12 +138,26 @@ public class Server {
         return s.toLowerCase();
     }
 
+    public String readFiles2 (String fileName){
+        String s = "";
+        try (FileInputStream inp1 = new FileInputStream(fileName)) {
+            Scanner in1 = new Scanner(new InputStreamReader(inp1, "UTF-8")).useLocale(Locale.US);
+            while (in1.hasNext()) {
+                s += in1.nextLine() + " ";
+            }
+            in1.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return s.toLowerCase();
+    }
+
     public void readElement(){
         phrasespos = getPhrases(readFiles("C:\\Users\\Vika\\Desktop\\chatroom\\src\\main\\resources\\positive.txt"));
         phrasesneg = getPhrases(readFiles("C:\\Users\\Vika\\Desktop\\chatroom\\src\\main\\resources\\negative.txt"));
         postext = getPhrases(readFiles("C:\\Users\\Vika\\Desktop\\chatroom\\src\\main\\resources\\positive2.txt"));
         negtext = getPhrases(readFiles("C:\\Users\\Vika\\Desktop\\chatroom\\src\\main\\resources\\negative2.txt"));
-        texts = getElem(readFiles("C:\\Users\\Vika\\Desktop\\chatroom\\src\\main\\resources\\texts.txt"));
+        texts = getElem(readFiles2("C:\\Users\\Vika\\Desktop\\chatroom\\src\\main\\resources\\texts.txt"));
     }
 
 }

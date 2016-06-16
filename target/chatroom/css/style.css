@@ -291,10 +291,35 @@ li {
 }
 
 .text-block{
-    width: 200px;
+    width: 283px;
     background-color: wheat;
     height: auto;
     position: absolute;
-    padding: 20px;
     box-sizing: border-box;
+}
+.negative-block{
+    top: 0;
+    right: 0;
+}
+
+/*answer*/
+table {
+	width: 100%; /* Ширина таблицы */
+}
+td {
+	vertical-align: top; /* Выравнивание по верхнему краю ячейки */
+}
+#col1 {
+	width: 70%; /* Ширина первой колонки */
+	background: #fc0; /* Цвет фона первой колонки */
+}
+#col2 {
+    width: 15%;
+	background: #afccdb; /* Цвет фона второй колонки */
+    text-align: center;
+}
+#col3 {
+	width: 15%; /* Ширина третьей колонки */
+	background: #fc0; /* Цвет фона третьей колонки */
+    text-align: center;
 }

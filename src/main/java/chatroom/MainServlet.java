@@ -48,7 +48,7 @@ public class MainServlet extends ServerAwareServlet {
         {
             for (Message message : messages)
             {
-                String lowmes = message.getMes();
+                String lowmes = (message.getMes()).toLowerCase();
                 String[] words = server.getElemS(lowmes);
                 String word2;
                 String word3;
@@ -108,7 +108,7 @@ public class MainServlet extends ServerAwareServlet {
 
         if(messages.size()>0) {
             for (Message message : messages) {
-                String lowmes = message.getMes();
+                String lowmes = (message.getMes()).toLowerCase();
                 String[] words = server.getElemS(lowmes);
                 int i=0;
                 while (words[i]!=null) {
@@ -129,11 +129,11 @@ public class MainServlet extends ServerAwareServlet {
         String phrase1 = "";
         String phrase2 = "";
         String phrase3 = "";
-        for (int i = n; i<text.size(); i++){
-            if (text.get(i) == word) {
-                if (i != 0 && text.size() > i) phrase1 = text.get(i - 1) + " " + text.get(i) + " " + text.get(i + 1);
-                if (i == 0 && text.size() >= i) phrase2 = text.get(i) + " " + text.get(i + 1);
-                if (i != 0 && text.size() == i-1) phrase3 = text.get(i - 1) + " " + text.get(i);
+        for (int i = n; i<text.size()-1; i++){
+            if (text.get(i).equalsIgnoreCase(word)) {
+                if (i != 0) {phrase1 = text.get(i - 1) + " " + text.get(i) + " " + text.get(i + 1);
+                                                phrase2 = text.get(i) + " " + text.get(i + 1);
+                                                phrase3 = text.get(i - 1) + " " + text.get(i);}
             }
             if (phrase1 != "" && !result.contains(phrase1)) result.add(phrase1);
             if (phrase2 != "" && !result.contains(phrase2)) result.add(phrase2);
@@ -147,6 +147,7 @@ public class MainServlet extends ServerAwareServlet {
         Server server = getServer();
         ArrayList<String> texts = server.getTexts();
         ArrayList<String> posWords = new ArrayList<>();//містяться позитивні слова, які знайшлись в тексті
+        ArrayList<String> negWords = new ArrayList<>();//містяться позитивні слова, які знайшлись в тексті
         ArrayList<ArrayList<String>> posPhraseList = new ArrayList<>();//містяться позитивні словосполучення по номеру відповідає позитивному слову зі списку posWords
         ArrayList<ArrayList<String>> negPhraseList = new ArrayList<>();
         String phrase1 = "";
@@ -166,10 +167,20 @@ public class MainServlet extends ServerAwareServlet {
             combinText.add(texts.get(size - 2) + " " + texts.get(size - 1));
         }
 
-        //пошук позитивних слів та відповідний список словосполучень з ним в тексті
+        //шукаємо кількість одинарних слів(з повідомлень),які є в тексті. Зберігається в posCount negCount
+        int [] posCount = new int[1000];
+        int [] negCount = new int[neg.size()];
+        for(int i=0; i<posCount.length; i++)
+            posCount[i] = 1;
+        for(int i=0; i<negCount.length; i++)
+            negCount[i] = 1;
+
+
         ArrayList<String> findother = new ArrayList<>();
+        ArrayList<String> findotherneg = new ArrayList<>();
         for (int i = 0; i < texts.size(); i++) {
-            if (pos.contains(texts.get(i))) {
+            //пошук позитивних слів та відповідний список словосполучень з ним в тексті
+            if (pos.contains(texts.get(i)) && !posWords.contains(texts.get(i))) {
                 posWords.add(texts.get(i));
                 if (i != 0 && texts.size() > i) {
                     phrase1 = texts.get(i - 1) + " " + texts.get(i) + " " + texts.get(i + 1);
@@ -178,71 +189,87 @@ public class MainServlet extends ServerAwareServlet {
                 }
                 //шукаємо в тексті позтивне слово, яке вже виявили(шукаємо чи воно є іще)
                 findother = findWordNext(i + 1, texts, texts.get(i));
-                posPhraseList.get(posWords.size() - 1).addAll(findother);
+                posPhraseList.add(posWords.size() - 1,findother);
             }
+            else if (posWords.contains(texts.get(i)))
+            {posCount[posWords.size()-1]++;}
             if (phrase1 != "" && !findother.contains(phrase1)) posPhraseList.get(posWords.size() - 1).add(phrase1);
             if (phrase2 != "" && !findother.contains(phrase2)) posPhraseList.get(posWords.size() - 1).add(phrase2);
             if (phrase3 != "" && !findother.contains(phrase3)) posPhraseList.get(posWords.size() - 1).add(phrase3);
 
 
-            /*if (neg.contains(texts.get(i))) {
-                if (i != 0 && texts.size() > i) phrase1 = texts.get(i - 1) + " " + texts.get(i) + " " + texts.get(i + 1);
-
-                if (i == 0 && texts.size() >= i) phrase2 = texts.get(i) + " " + texts.get(i + 1);
-                if (i!=0 && texts.size() == i-1) phrase3 = texts.get(i - 1) + " " + texts.get(i);
-            }
-            if (phrase1 != "") negPhrase.add(phrase1);
-            if (phrase2 != "") negPhrase.add(phrase2);
-            if (phrase3 != "") negPhrase.add(phrase3);*/
+            //пошук негативних слів та відповідний список словосполучень з ним в тексті
+            if (neg.contains(texts.get(i)) && !negWords.contains(texts.get(i))) {
+                    negWords.add(texts.get(i));
+                    if (i != 0 && texts.size() > i) {
+                        phrase1 = texts.get(i - 1) + " " + texts.get(i) + " " + texts.get(i + 1);
+                        phrase2 = texts.get(i) + " " + texts.get(i + 1);
+                        phrase3 = texts.get(i - 1) + " " + texts.get(i);
+                    }
+                    //шукаємо в тексті позтивне слово, яке вже виявили(шукаємо чи воно є іще)
+                    findotherneg = findWordNext(i + 1, texts, texts.get(i));
+                    negPhraseList.add(negWords.size() - 1,findotherneg);
+                }
+                else if (negWords.contains(texts.get(i)))
+                {negCount[negWords.size()-1]++;}
+                if (phrase1 != "" && !findotherneg.contains(phrase1)) negPhraseList.get(negWords.size() - 1).add(phrase1);
+                if (phrase2 != "" && !findotherneg.contains(phrase2)) negPhraseList.get(negWords.size() - 1).add(phrase2);
+                if (phrase3 != "" && !findotherneg.contains(phrase3)) negPhraseList.get(negWords.size() - 1).add(phrase3);
         }
 
-        //шукаємо кількість одинарних слів(з повідомлень),які є в тексті. Зберігається в posCount negCount
-        int [] posCount = new int[posWords.size()];
-        //int [] negCount = new int[neg.size()];
-        for(int i=0; i<posCount.length; i++)
-            posCount[i] = 0;
-        /*for(int i=0; i<negCount.length; i++)
-            negCount[i] = 0;*/
-
-        for (int i=0; i<texts.size(); i++)
-        {
-            for (int j=0; j<posWords.size(); j++)
-                if (texts.get(i) == posWords.get(j))   posCount[j]++;
-           /*for (int j=0; j<neg.size(); j++)
-                if (texts.get(i) == neg.get(j)) negCount[j]++;*/
-        }
 
         //шукаємо кількість подвійних і потрійних словосполучень(з повідомлень), які є в тексті. Зберігається в posPhraseCount negPhraseCount
         ArrayList<int []> posPhraseCount = new ArrayList<>();
         ArrayList<int []> negPhraseCount = new ArrayList<>();
+
         for (int i=0; i<posPhraseList.size();i++)
         {
-            for(int j=0; j<posPhraseList.get(i).size(); j++)
-                posPhraseCount.get(i)[j] = 0;
+            int [] arraypos = new int [posPhraseList.get(i).size()];
+            posPhraseCount.add(i,arraypos);
+        }
+
+        for (int i=0; i<negPhraseList.size();i++)
+        {
+            int [] arrayneg = new int [negPhraseList.get(i).size()];
+            posPhraseCount.add(i,arrayneg);
         }
 
         for (int i=0; i<combinText.size(); i++)
         {
             for (int k=0; k<posPhraseList.size(); k++)
                 for (int j=0; j<posPhraseList.get(k).size(); j++) {
-                    if (combinText.get(i) == posPhraseList.get(k).get(j)) posPhraseCount.get(k)[j] += 1;
+                    if (combinText.get(i).equalsIgnoreCase(posPhraseList.get(k).get(j)))
+                        posPhraseCount.get(k)[j]++;
                 }
-
-            /*for (int j=0; j<negPhrase.size(); j++)
-            {
-                if (combinText.get(i) == negPhrase.get(j)) negPhraseCount[j]++;
-            }*/
+            for (int k=0; k<negPhraseList.size(); k++)
+                for (int j=0; j<negPhraseList.get(k).size(); j++) {
+                    if (combinText.get(i).equalsIgnoreCase(negPhraseList.get(k).get(j)))
+                        negPhraseCount.get(k)[j]++;
+                }
         }
 
         //формуємо String в якому табличка результату : 1) слово/совосполучкння 2) кілбкісь з'явлень в текстах 3) відсоток від загальної кількості
-        String result="";
-        result = "Позитивні слова\n";
+        String result="<p>Позитивні слова</p><table cellpadding=\"5\" cellspacing=\"0\">";
+        result += "<tr><td id=\"col1\">СЛОВО</td><td id=\"col2\">К-ІСТЬ</td><td id=\"col3\">ЙМОВІРН</td></tr>";
         for (int i=0; i<posPhraseList.size(); i++) {
-            result += posWords.get(i) + " " + posCount[i] + "\n";
+            result += "<tr><td id=\"col1\">" + posWords.get(i) + "</td><td id=\"col2\">" + posCount[i]+"</td><td id=\"col3\"></td><td></td></tr>";
             for (int j = 0; j < posPhraseList.get(i).size(); j++)
-                result += posPhraseList.get(i).get(j) + " " + posPhraseCount.get(i)[j] + " " + 100 / posPhraseList.get(i).size() * posPhraseCount.get(i)[j]+"%" + "\n";
+                result += "<tr><td id=\"col1\">" + posPhraseList.get(i).get(j) + "</td><td id=\"col2\">" + posPhraseCount.get(i)[j] + "</td><td id=\"col3\">" + 100 / posPhraseList.get(i).size() * posPhraseCount.get(i)[j]+"%</td><td></td></tr>";
 
         }
+        result +="</table>";
+
+        result +="*";
+
+        result += "<p>Негативні слова</p><table cellpadding=\"5\" cellspacing=\"0\">";
+        result += "<tr><td id=\"col1\">СЛОВО</td><td id=\"col2\">К-ІСТЬ</td><td id=\"col3\">ЙМОВІРН</td></tr>";
+        for (int i=0; i<negPhraseList.size(); i++) {
+            result += "<tr><td id=\"col1\">" + negWords.get(i) + "</td><td id=\"col2\">" + negCount[i]+"</td><td id=\"col3\"></td><td></td></tr>";
+            for (int j = 0; j < negPhraseList.get(i).size(); j++)
+                result += "<tr><td id=\"col1\">" + negPhraseList.get(i).get(j) + "</td><td id=\"col2\">" + negPhraseCount.get(i)[j] + "</td><td id=\"col3\">" + 100 / negPhraseList.get(i).size() * negPhraseCount.get(i)[j]+"%</td><td></td></tr>";
+
+        }
+        result +="</table>";
         return result;
     }
 
@@ -299,7 +326,8 @@ public class MainServlet extends ServerAwareServlet {
         {
             response.setCharacterEncoding("utf-8");
             response.setContentType("text/html");
-            String resultUser = emotionAnalyser(getLastTimeMes(server.getActiveUsers().get(request.getSession().getAttribute("user")), new Date(new Date().getTime() - 3600000)));
+            //String resultUser = emotionAnalyser(getLastTimeMes(server.getActiveUsers().get(request.getSession().getAttribute("user")), new Date(new Date().getTime() - 3600000)));
+            String resultUser = emotionAnalyser(getLastMes(server.getActiveUsers().get(request.getSession().getAttribute("user"))));
             String resultText = resultUser + ";-1";
             response.getWriter().println(resultText);
         }

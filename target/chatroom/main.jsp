@@ -1,7 +1,7 @@
 <%@ page import="java.util.Date" %>
 <%--
   Created by IntelliJ IDEA.
-  Chatroom.User: Валерий
+  Chatroom.User: Vika and Roxolana
   Date: 13.01.2015
   Time: 22:41
   To change this template use File | Settings | File Templates.
@@ -14,7 +14,7 @@
 </head>
 <body>
   <div class ="chat-wrapper">
-      <div id="textpos" class="text-block">Позитивні слова</div>
+      <div id="textpos" class="text-block"></div>
       <div class = "chat-body">
       <h2> <%=request.getSession().getAttribute("user").toString()%>, вітаємо в чаті!</h2>
       <div class = "top-chat">
@@ -69,7 +69,7 @@
         </form>
       </div>
     </div>
-      <div class="text-block">Негативні слова</div>
+      <div class="text-block negative-block" id="textneg">Негативні слова</div>
   </div>
   <script type="text/javascript" src="<%=request.getContextPath()%>/jquery-2.1.3.js"></script>
   <script>
@@ -88,9 +88,19 @@
           type: "GET",
           data:"action=gettext"
         }).done(function(responsetext){
-          var resulttext = responsetext;
-            if (resulttext!=null){
-                $("#textpos").append(resulttext);
+            var text = responsetext.split("*");
+
+          var posresult = text[0].toString();
+            if (posresult!=null){
+
+                $("#textpos").html("");
+                $("#textpos").append(posresult);
+            }
+            var negresult = text[1].toString();
+            if (negresult!=null){
+
+                $("#textneg").html("");
+                $("#textneg").append(negresult);
             }
         }).fail(function(){
             //alert("Сервер не доступний");
