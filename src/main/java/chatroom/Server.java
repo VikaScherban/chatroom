@@ -43,7 +43,7 @@ public class Server {
         ArrayList<String> words = new ArrayList<String>();
 
         String[] a = s.split(";");
-        for (int i=1; i< a.length-1; i++){
+        for (int i=1; i< a.length; i++){
             words.add(a[i]);
         }
         String elem =  a[0].substring(1, a[0].length());

@@ -293,9 +293,10 @@ li {
 .text-block{
     width: 283px;
     background-color: wheat;
-    height: auto;
     position: absolute;
     box-sizing: border-box;
+	max-height: 693px;
+	overflow-y: scroll;
 }
 .negative-block{
     top: 0;

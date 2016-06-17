@@ -88,20 +88,19 @@
           type: "GET",
           data:"action=gettext"
         }).done(function(responsetext){
-            var text = responsetext.split("*");
-
+          var text = responsetext.split("*");
           var posresult = text[0].toString();
-            if (posresult!=null){
+          if (posresult!=null) {
 
-                $("#textpos").html("");
-                $("#textpos").append(posresult);
-            }
-            var negresult = text[1].toString();
-            if (negresult!=null){
+            $("#textpos").html("");
+            $("#textpos").append(posresult);
+          }
+          var negresult = text[1].toString();
+          if (negresult!=null) {
 
-                $("#textneg").html("");
-                $("#textneg").append(negresult);
-            }
+            $("#textneg").html("");
+            $("#textneg").append(negresult);
+          }
         }).fail(function(){
             //alert("Сервер не доступний");
         });
