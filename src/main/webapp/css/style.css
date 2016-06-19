@@ -324,3 +324,6 @@ td {
 	background: #fc0; /* Цвет фона третьей колонки */
     text-align: center;
 }
+#col1.red-col, #col2.red-col, #col3.red-col{
+	background: red;
+}

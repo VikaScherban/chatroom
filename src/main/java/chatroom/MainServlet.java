@@ -142,6 +142,17 @@ public class MainServlet extends ServerAwareServlet {
         return  result;
     }
 
+    private boolean checkTwo(String s){
+        int rez = 0;
+        for (int i=0; i<s.length(); i++)
+        {
+            if (s.charAt(i)== ' ')  rez++;
+        }
+
+        if (rez == 1) return true;
+        return false;
+    }
+
     //знаходить в текстах слова,які зустрічались в повідомленнях і виділяє словоспоолучення з ними
     private String textAnalysis(ArrayList<String> pos, ArrayList<String> neg) {
         Server server = getServer();
@@ -255,9 +266,13 @@ public class MainServlet extends ServerAwareServlet {
         String result="<p>Позитивні слова</p><table cellpadding=\"5\" cellspacing=\"0\">";
         result += "<tr><td id=\"col1\">СЛОВО</td><td id=\"col2\">К-ІСТЬ</td><td id=\"col3\">ЙМОВ</td></tr>";
         for (int i=0; i<posPhraseList.size(); i++) {
-            result += "<tr><td id=\"col1\">" + posWords.get(i) + "</td><td id=\"col2\">" + posCount[i]+"</td><td id=\"col3\"></td><td></td></tr>";
+            result += "<tr><td id=\"col1\">" + posWords.get(i) + "</td><td id=\"col2\">" + posCount[i]+"</td><td id=\"col3\">"+ Math.rint(100000.0 * 100.0 /texts.size()*(double)posCount[i]) / 100000.0  +"%</td><td></td></tr>";
             for (int j = 0; j < posPhraseList.get(i).size(); j++)
-                result += "<tr><td id=\"col1\">" + posPhraseList.get(i).get(j) + "</td><td id=\"col2\">" + posPhraseCount.get(i)[j] + "</td><td id=\"col3\">" + 100 / posPhraseList.get(i).size() * posPhraseCount.get(i)[j]+"%</td><td></td></tr>";
+                if (checkTwo(posPhraseList.get(i).get(j))) {
+                    result += "<tr><td id=\"col1\">-" + posPhraseList.get(i).get(j) + "</td><td id=\"col2\">" + posPhraseCount.get(i)[j] + "</td><td id=\"col3\">" + 100 / posCount[i] * posPhraseCount.get(i)[j] + "%</td><td></td></tr>";
+                }
+                else result += "<tr><td id=\"col1\" class=\"red-col\">" + posPhraseList.get(i).get(j) + "</td><td id=\"col2\" class=\"red-col\">" + posPhraseCount.get(i)[j] + "</td><td id=\"col3\" class=\"red-col\">" + 100 / posCount[i] * posPhraseCount.get(i)[j] + "%</td><td></td></tr>";
+
 
         }
         result +="</table>";
@@ -267,9 +282,12 @@ public class MainServlet extends ServerAwareServlet {
         result += "<p>Негативні слова</p><table cellpadding=\"5\" cellspacing=\"0\">";
         result += "<tr><td id=\"col1\">СЛОВО</td><td id=\"col2\">К-ІСТЬ</td><td id=\"col3\">ЙМОВ</td></tr>";
         for (int i=0; i<negPhraseList.size(); i++) {
-            result += "<tr><td id=\"col1\">" + negWords.get(i) + "</td><td id=\"col2\">" + negCount[i]+"</td><td id=\"col3\"></td><td></td></tr>";
+            result += "<tr><td id=\"col1\">" + negWords.get(i) + "</td><td id=\"col2\">" + negCount[i]+"</td><td id=\"col3\">"+ Math.rint(100000.0 * 100.0 /texts.size()*(double)negCount[i]) / 100000.0+"%</td><td></td></tr>";
             for (int j = 0; j < negPhraseList.get(i).size(); j++)
-                result += "<tr><td id=\"col1\">" + negPhraseList.get(i).get(j) + "</td><td id=\"col2\">" + negPhraseCount.get(i)[j] + "</td><td id=\"col3\">" + 100 / negPhraseList.get(i).size() * negPhraseCount.get(i)[j]+"%</td><td></td></tr>";
+                if (checkTwo(negPhraseList.get(i).get(j))) {
+                    result += "<tr><td id=\"col1\">-" + negPhraseList.get(i).get(j) + "</td><td id=\"col2\">" + negPhraseCount.get(i)[j] + "</td><td id=\"col3\">" + 100 / negCount[i] * negPhraseCount.get(i)[j] + "%</td><td></td></tr>";
+                }
+            else result += "<tr><td id=\"col1\" class=\"red-col\"> " + negPhraseList.get(i).get(j) + "</td><td id=\"col2\" class=\"red-col\">" + negPhraseCount.get(i)[j] + "</td><td id=\"col3\" class=\"red-col\">" + 100 / negCount[i] * negPhraseCount.get(i)[j] + "%</td><td></td></tr>";
 
         }
         result +="</table>";

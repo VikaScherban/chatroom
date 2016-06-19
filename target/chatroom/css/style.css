@@ -291,7 +291,7 @@ li {
 }
 
 .text-block{
-    width: 283px;
+    width: 275px;
     background-color: wheat;
     position: absolute;
     box-sizing: border-box;
@@ -323,4 +323,7 @@ td {
 	width: 15%; /* Ширина третьей колонки */
 	background: #fc0; /* Цвет фона третьей колонки */
     text-align: center;
+}
+#col1.red-col, #col2.red-col, #col3.red-col{
+	background: red;
 }

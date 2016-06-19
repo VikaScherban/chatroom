@@ -159,5 +159,4 @@ public class Server {
         negtext = getPhrases(readFiles("C:\\Users\\Vika\\Desktop\\chatroom\\src\\main\\resources\\negative2.txt"));
         texts = getElem(readFiles2("C:\\Users\\Vika\\Desktop\\chatroom\\src\\main\\resources\\texts.txt"));
     }
-
 }
