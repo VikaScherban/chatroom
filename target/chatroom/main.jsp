@@ -2,7 +2,7 @@
 <%--
   Created by IntelliJ IDEA.
   Chatroom.User: Vika and Roxolana
-  Date: 13.01.2015
+  Date: 13.01.2016
   Time: 22:41
   To change this template use File | Settings | File Templates.
 --%>

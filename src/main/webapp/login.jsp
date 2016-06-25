@@ -1,6 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
-  Chatroom.User: Валерий
+  Chatroom.User:
   Date: 12.01.2015
   Time: 21:25
   To change this template use File | Settings | File Templates.

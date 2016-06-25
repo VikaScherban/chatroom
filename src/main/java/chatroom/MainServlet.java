@@ -61,10 +61,15 @@ public class MainServlet extends ServerAwareServlet {
                 if (words.length>=2){
                     for (int i=0; i<words.length - 1; i++)
                     {
+                        if (words.length>=3 && i<words.length - 2) {
+                            word3 = words[i] + " " + words[i+1] + " " + words[i+2];
+                            if (posWords.contains(word3)) numbOfPos++;
+                            else if (negWords.contains(word3)) numbOfNeg++;
+                        }
                         word2 = words[i] + " " + words[i+1];
                         if (posWords.contains(word2)) numbOfPos++;
                         else if (negWords.contains(word2)) numbOfNeg++;
-                            //словосполучення не міститься в жодній базі, перевіряємо комбінації слів
+                            //словосполучення не міститься в жодній базі, перевіряємо окремо кожне слово
                         else  {if( posWords.contains(words[i])) numbOfPos++;
                                else if (negWords.contains(words[i])) numbOfNeg++;
                                if (i == words.length-2) if( posWords.contains(words[i+1])) numbOfPos++;
@@ -73,15 +78,6 @@ public class MainServlet extends ServerAwareServlet {
                     }
                 }
 
-                if (words.length>=3){
-                    for (int i=0; i<words.length - 2; i++)
-                    {
-                        word3 = words[i] + " " + words[i+1] + " " + words[i+2];
-                        if (posWords.contains(word3)) numbOfPos++;
-                        else if (negWords.contains(word3)) numbOfNeg++;
-
-                    }
-                }
                 posresult += numbOfPos*((double)sizemes/messages.size());
                 negresult += numbOfNeg*((double)sizemes/messages.size());
                 sizemes++;
@@ -158,7 +154,7 @@ public class MainServlet extends ServerAwareServlet {
         Server server = getServer();
         ArrayList<String> texts = server.getTexts();
         ArrayList<String> posWords = new ArrayList<>();//містяться позитивні слова, які знайшлись в тексті
-        ArrayList<String> negWords = new ArrayList<>();//містяться позитивні слова, які знайшлись в тексті
+        ArrayList<String> negWords = new ArrayList<>();//містяться негативні слова, які знайшлись в тексті
         ArrayList<ArrayList<String>> posPhraseList = new ArrayList<>();//містяться позитивні словосполучення по номеру відповідає позитивному слову зі списку posWords
         ArrayList<ArrayList<String>> negPhraseList = new ArrayList<>();
         String phrase1 = "";
@@ -197,7 +193,7 @@ public class MainServlet extends ServerAwareServlet {
                     phrase2 = texts.get(i) + " " + texts.get(i + 1);
                     phrase3 = texts.get(i - 1) + " " + texts.get(i);
                 }
-                //шукаємо в тексті позтивне слово, яке вже виявили(шукаємо чи воно є іще)
+                //шукаємо в тексті позтивне слово, яке вже виявили(шукаємо чи воно є ще)
                 posother = findWordNext(i + 1, texts, texts.get(i));
                 posPhraseList.add(posWords.size() - 1,posother);
             }
